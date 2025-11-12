@@ -1,0 +1,33 @@
+package com.chrc.jwtbasic;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+class JwtbasicApplicationTests {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+	@Test
+	void contextLoads() {
+	}
+
+	@Test
+	void loginWithValidCredentialsReturnsToken() throws Exception {
+		mockMvc.perform(post("/api/auth/login")
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content("{\"username\":\"camper2023\",\"password\":\"123\"}"))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.token").isNotEmpty());
+	}
+
+}
